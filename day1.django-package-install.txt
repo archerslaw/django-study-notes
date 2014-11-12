@@ -1,14 +1,20 @@
 1. gjango install
+
 2. django-admin startproject $project
+
 3. django-admin startapp $blog
+
 4. vim setting.py
     add add -----> blog
+
 5. vim urls.py
     url(r'blog/index/$','blog.views.index')
+
 6.vim blog.views.py
 from django.http import HttpResponse
 
 def index(req):
     return HttpResponse('<h1>hello django.</h1>')
+
 7.python manager.py runserver
-  url: 127.0.0.1:8000
+    url: 127.0.0.1:8000
