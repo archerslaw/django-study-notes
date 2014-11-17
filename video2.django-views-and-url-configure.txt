@@ -14,3 +14,4 @@
      )
 
 2.url transfer method.
+post/get.
