@@ -1,0 +1,40 @@
+1.django template using work flow.
+#django-admin.py startproject $project_name
+#cd $project_name
+#django-admin.py startapp $app_name
+#vim settings.py
+INSTALLED_APPS = (
+    ...
+    '$app_name',
+    )
+#mkdir ../$project_name/templates
+
+#vim url.py
+url(r'^index/$','$app_name.views.index')
+
+#vim views.py
+from django.template import loader,Context
+from django.http import HttpResponse
+def index(req):
+    t = loader.get_template('index.html')
+    c = Context('uname':'alex')
+    html = t.render(c)
+    return HttpResponse(html)
+
+#vim $project_name/$app_name/templates/index.html
+<h1>Nokeybbs.COM</h1>
+
+# python manage.py runserver
+
+2.via template object.
+from django.template import loader,Context,Template
+from django.http import HttpResponse
+def index1(req):
+   t = Template('<h1>Hello {{uname}}</h1>')
+   c = Context({'uname':'Nokeybbs.COM'})
+   return HttpResponse.render(c)
+
+3.via render_to_response method.
+from django.shortcuts import render_to_response
+def index2(req):
+    return render_to_response('index.html',{'uname':'Nokeybbs.COM'})
