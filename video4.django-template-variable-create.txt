@@ -1,0 +1,55 @@
+1.create django template variable.
+I.method 1: static/object
+from django.shortcuts import render_to_response
+def index(req):
+    return render_to_response('index.html',{'title':'my page', 'user':'tom'})
+
+<title>{{title}}</title>
+<h1>hello {{}}</h1>
+
+II.method 2: dynamic/dictionary
+from django.shortcuts import render_to_response 
+def index(req):
+    user = {'name':'tom', 'age':23, 'sex':'man'}
+    return render_to_response('index.html',{'title':'my page', 'user':user})
+
+<h1>hello {{user.name}}</h1>
+<li>age:{{user.age}}</li>
+<li>sex:{{user.sex}}</li>
+
+III.method 3: dynamic/list
+from django.shortcuts import render_to_response 
+
+class Person(object):
+    def __init__(self, name, age, sex):
+        self.name=name
+        self.age=age
+        self.sex=sex
+def index(req):
+    book_list=['python','java']
+    user = Person('tom',23,'man')
+    return render_to_response('index.html',{'title':'my page', 'user':user, 'book_list':book_list})
+
+<h1>hello {{user.name}}</h1>                                                                       
+<li>age:{{user.age}}</li>                                                                        
+<li>sex:{{user.sex}}</li>
+<h1>{{book_list}}</h1>                                                                       
+<li>{{book_list.0}}</li>                                                                        
+<li>{{book_list[1]}}</li> 
+
+IV.method 4: dynamic/method
+from django.shortcuts import render_to_response 
+                           
+class Person(object):      
+    def __init__(self, name, age, sex):
+        self.name=name     
+        self.age=age       
+        self.sex=sex
+    def say(self):
+        return 'I'm %s' % self.name
+def index(req):            
+    book_list=['python','java']
+    user = Person('tom',23,'man')
+    return render_to_response('index.html',{'title':'my page', 'user':user, 'book_list':book_list})
+
+<div>the {{user}} say:{{user.say}}</div>
