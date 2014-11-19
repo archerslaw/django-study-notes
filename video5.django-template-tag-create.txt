@@ -1,0 +1,46 @@
+1.create django template build-in tag.
+
+1.1.'if' tag.
+{% if %}
+    <li>user: {{user.name}}</li>
+{% else %}
+    user not existing at all.
+{% endif %}
+
+1.2.'for' tag.
+list:
+{% for book in book_list %}
+    <li>{{book}}</li>
+{% endfor %}
+
+dict:
+{{% for k in user %}}
+    <li>{{k}}</li>
+{% endfor %}
+
+key-value:
+{{% for k in user.items %}}
+    <li>{{k}}:{{v}}</li>
+{% endfor %}
+
+1.3.sets a number of variables available within the loop.
+forloop.counter     The current iteration of the loop (1-indexed)
+forloop.counter0    The current iteration of the loop (0-indexed)
+forloop.revcounter  The number of iterations from the end of the loop (1-indexed)
+forloop.revcounter0 The number of iterations from the end of the loop (0-indexed)
+forloop.first       True if this is the first time through the loop
+forloop.last        True if this is the last time through the loop
+forloop.parentloop  For nested loops, this is the loop surrounding the current one
+e.g:
+{{% for k in user.items %}}                              
+    <li>{{forloop.counter}}.{{k}}:{{v}}</li>                                 
+{% endfor %}
+
+1.4.for ... empty.
+The for tag can take an optional {% empty %} clause whose text is displayed if the given array is empty or could not be found:
+{% for athlete in athlete_list %}
+    <li>{{ athlete.name }}</li>
+{% empty %}
+    <li>Sorry, no athletes in this list.</li>
+{% endfor %}
+
