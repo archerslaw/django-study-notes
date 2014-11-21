@@ -1,0 +1,30 @@
+1.install MySQL-python rpm package.
+#service mysqld start
+mysql -uroot
+mysql> create database $xxx default charset = utf8;
+mysql> Bye
+
+2.>>> import MySQLdb
+
+3.#vim settings.py
+DATABASES = {
+    'default':{
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': '$xxx',
+        'USER': 'root',
+        ...
+    }
+}
+
+4.#vim models.py
+from django.db import models
+class Employee(models.Mode):
+    name = models.CharField(max_length=30)
+
+5.#python manage.py syncdb
+
+6.mysql action.
+mysql>use $xxx;
+mysql>show tables;
+mysql>desc blog_employee;
+
