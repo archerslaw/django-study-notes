@@ -1,0 +1,58 @@
+1.use forms + admin(database) to upload file.
+#vim blog/models.py
+from django.db import models
+
+class User(models.Mode):
+    username = models.CharField(max_length=30)
+    headimg  = models.FileField(upload_to='./upload')
+
+    def __unicode__(self):
+        return self.username
+
+2.#python manage.py syncdb
+
+3.#vim blog/views.py
+from django.shirtcuts import render_to_response
+from django import forms
+from django.http import HttpResponse
+from blog.models import User
+
+class UserForm(forms.Form):
+    username = forms.CharField()
+    headimg  = forms.FileField()
+
+def register(req):
+    if req.method == "PODT":
+        uf = UserForm(req.POST, req.FILES)
+        if uf.is_valid():
+            #print uf.cleaned_data
+            username = uf.cleaned_data['username']
+            headimg  = uf.cleaned_data['headimg']
+            user = User()
+            user.username = username
+            user.headimg  = headimg
+            user.save()
+            print username, headimg
+            return HttpResponse("OK")
+        else:
+            uf = UserForm()
+    return render_to_response('register.html', {"uf": uf})
+
+4.#mkdir blog/templates
+#vim blog/templates/register.html
+<body>
+    <h1>Hell Django</h1>
+    <form method="post", enctype="sultipart/form-data">
+        {{ uf.as_p }}
+        <input type="submit" value="OK" />
+    </form>
+</body>
+
+5.#sqllited web.db
+sqlite> select * from blog_user;
+sqlite>
+
+6.There are other output options though for the <label>/<input> pairs:
+ {{ form.as_table }} will render them as table cells wrapped in <tr> tags
+ {{ form.as_p }} will render them wrapped in <p> tags
+ {{ form.as_ul }} will render them wrapped in <li> tags
