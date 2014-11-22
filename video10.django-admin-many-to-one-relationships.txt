@@ -1,0 +1,58 @@
+1.#vim settings.py
+DATAVASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite',
+        ...
+}
+INSTALLED_APPS = {
+    ...
+    '$app_name',
+    'django.contrib.admin',
+    ...
+}
+
+2.#vim usrs.py
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    ...
+    url(r'^admin/',include(admin.site.urls)),
+)
+
+3.#vim blog/models.py
+from django.db import models
+
+sex_choices = (
+    ('f', 'female'),
+    ('a', 'male'),
+)
+class User(models.Model):
+    name = models.CharField(max_length=30)
+    sex = models.CharField(max_length=1, choices=sex_choices)
+
+4.#python manage.py syncdb
+--->django_amdin_log
+
+5.#python manage.py runserver
+http://$addr_ip:$port/admin/
+
+6.#vim blog/admin.py
+from django.contrib import admin
+from blog.models import User
+
+admin.site.register(User)
+
+7.append a unicode to blog/models.py
+class User(models.Model): 
+    name = models.CharField(max_length=30)
+    sex = models.CharField(max_length=1, choices=sex_choices)
+
+    def __unicode__(self):
+        return self.name
+
+8.#sqlite3 xxx.db
+sqlite> .help
+sqlite> .tables
+sqlite> select * from blog_user;
+sqlite> 
