@@ -1,0 +1,67 @@
+1.Many-to-one relationships:
+ To define a many-to-one relationship, use django.db.models.ForeignKey.
+
+2.Many-to-many relationships:
+ To define a many-to-many relationship, use ManyToManyField.
+
+3.One-to-one relationships:
+ To define a one-to-one relationship, use OneToOneField.
+
+4.#vim models.py
+class Author(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.name
+
+class Book(models.Model):
+    name = models.CharField(max_length=30)
+    authors = models.ManyToManyField(Author)
+    
+    def __unicode__(self):
+        return self.name
+
+5.#ipython manage.py shell
+from blog.models import Author, Book
+Author.objects.create(name='Alen')
+Author.objects.create(name='Ben')
+Author.objects.create(name='Carl')
+Author.objects.create(name='Dev')
+authors = Author.objects.all()
+authors
+>[<Author: Alen>, <Author: Ben>, <Author: Carl>, <Author: Dev>]
+
+book1 = Book()
+book1.name = 'python_book'
+book1.save()
+alen = Author.objects.get(name__exact='Alen')
+book1.authors.add(alen)
+book1.authors.add(authors[1])
+book1.authors.all()
+>[<Author: Alen>, <Author: Ben>]
+book1.authors.add(authors[2])
+book1.authors.add(authors[3])
+
+book1.authors.all()
+>[<Author: Alen>, <Author: Ben>, <Author: Carl>, <Author: Dev>]
+book1.authors.remove(alen)
+book1.authors.all()
+>[<Author: Ben>, <Author: Carl>, <Author: Dev>]
+book1.authors.filter(name__exact = 'Carl')
+>[<Author: Carl>]
+
+alen.book_set.all()
+>[]
+
+alen.book_set.add(book1)
+alen.book_set.all()
+alen.book_set.create(name = 'java_book')
+alen.book_set.all()
+>[<Book: python_book>, <Book: java_book>]
+
+books = Book.objects.all()
+>[<Book: python_book>, <Book: java_book>]
+
+alen.book_set.remove(books[0])
+alen.book_set.all()
+>[<Book: java_book>]
