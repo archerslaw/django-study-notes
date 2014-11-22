@@ -1,0 +1,44 @@
+1.#vim settings.py
+DATABASES = {
+    'ENGINE': 'django.db.backends.sqllite3',
+    'NAME': 'xx.db'
+    ...
+}
+
+INSTALLED_APPS ={
+    'django.contrib.auth',
+    'django.contrib.admin',
+    ...
+}
+
+2.#vim urls.py
+from django.contrib import admin
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    url(r'^admin/', include(admin.site.urls)),
+    ...
+)
+
+3.#python manage.py syncbd
+#sqllite3 xx.db
+sqlite> .tables;
+sqlite> .schema auth_user
+sqlite> select * frp, auth_user;
+
+4.#python manage.py runserver
+
+5.#ipython manage.py shell
+from django.contrib.auth.models import User
+User.objects.all()
+>[<User: root>, <User: alen>]
+User.objects.create_user(username='ben', password='111', email='ben@gmail.com')
+ben =  User.objects.get(username__exact="ben")
+ben.is_staff
+> False
+ben.is_staff = True
+ben.save()
+ben.first_name = 'alx'
+ben.save()
+ben.last_name = 'benok'
+ben.save()
