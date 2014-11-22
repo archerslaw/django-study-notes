@@ -1,0 +1,38 @@
+1.Three most common types of database relationships: many-to-one, many-to-many and one-to-one.
+
+2.many-to-one.
+#vim modules.py
+"""One--->Many"""
+import django.db import models
+
+class Entry(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.name
+
+class Blog(models.Model):
+    name = models.CharField(max_length=30)
+    entry = models.ForeignKey(Entry)
+
+    def __unicode__(self):
+        return self.name
+
+3.#python manage.py syncbd
+
+4.#ipython manage.py shell
+from blog.models import Entry,Blog
+entry1 = Entry.objects.create(name='alex1')
+entry2 = Entry.objects.create(name='alex2')
+entry3 = Entry.objects.create(name='alex3')
+blog1 = Blog.objects.create(name='blox1',entry=entry1)
+blog1
+
+5.Many side search and One side search.
+#ipython manage.py shell
+blog1.<TAB>
+blog1.entry
+blog1.entry_id
+entry1.<TAB>
+entry1.blog_set
+entry1.blog_set.all()
