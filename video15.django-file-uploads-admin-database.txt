@@ -1,0 +1,47 @@
+1.file upload handler via admin.
+#vim blog/models.py
+from django.db import models
+
+class User(models.Model):
+    username = models.CharField(max_length=30)
+    headimg  = models.FileField(upload_to='./uploadfile')
+    
+    def __unicode__(self):
+        return self.username
+
+2.Model field reference.
+https://docs.djangoproject.com/en/1.7/ref/models/fields/#charfield
+A string field, for small- to large-sized strings.
+class CharField(max_length=None[, **options])
+A file-upload field.
+class FileField([upload_to=None, max_length=100, **options])
+
+3.modify the settings.py
+INSTALLED_APPS = {
+    'django.contrib.admin',
+    ...
+}
+
+4.modify urls.py
+admin.autodiscover()
+
+urlpatterns = patterns('',
+    ...
+    url(r'^admin/', include(admin.site.urls)),
+)
+
+5.#python manage.py syncdb
+#python manage.py runserver
+
+6.#vim blog/admin.py
+from django.contrib import admin
+from blog.models import User
+
+admin.site.register(User)
+
+7.Absolyte filesystem path to the directory that will hold user-uploader files in settings.py.
+MEDIA_ROOT = ''
+
+8.#sqlite3 xxx.db
+sqlite> select * from blog_user;
+sqlite> 
