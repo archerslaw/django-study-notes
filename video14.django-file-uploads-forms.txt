@@ -1,0 +1,67 @@
+1.django handles a file upload.
+The file data ends up placed in request.FILES. If you’re saving a file on a Model with a FileField, using a ModelForm makes this process much easier. The file object will be saved to the location specified by the upload_to argument of the corresponding FileField when calling form.save().
+
+2.#vim urls.py
+url(r'^blog/regist/$', 'blog.views.regist'),
+
+3.#mkdir blog/templates
+#vim blog/views.py
+from django.shortcuts import render_to_response
+from django import forms
+from django.http import HttpResponse
+
+class UserForm(forms.Form):
+    username = forms.CharField()
+    headimg  = forms.FileField()
+
+def regist(req):
+    if req.method == "POST"
+        uf = UserForm(req.POST, req_FILES)
+        if uf.is_valid():
+            print uf.cleaned_data['username']
+            #print req.FILES
+            print uf.cleaned_data['headimg'].name
+            print uf.cleaned_data['headimg'].size
+            fp = file('/root/uploadfile/'+uf.cleaned_data['headimg'].name, 'wb')
+            read = uf.cleand_data['headimg'].read()
+            fp.write(read)
+            fp.close()
+            return HttpResponse("OK")
+    else:
+        uf = UserForm()
+
+    return render_toresponse('regist.html',{'uf': uf})
+
+4.#blog/templates/regist.html
+<body>
+    <div>Users Register:</div>
+    <div>
+        <form method="post", enctype="multipart/form-data">
+            {{ uf.as_p}}
+            <input type="submit" value="OK" />
+        </form>
+    </div>
+</body>
+
+5.#python manage.py runserver
+
+6.Built-in Field classes.
+https://docs.djangoproject.com/en/1.7/ref/forms/fields/
+BooleanField - Default widget: CheckboxInput
+CharField    - Default widget: TextInput
+ChoiceField  - Default widget: Select
+DateField    - Default widget: DateInput
+DateTimeField- Default widget: DateTimeInput
+FileField    - Default widget: ClearableFileInput
+
+7.HttpRequest.FILES
+https://docs.djangoproject.com/en/1.7/ref/request-response/
+A dictionary-like object containing all uploaded files. Each key in FILES is the name from the <input type="file" name="" />. Each value in FILES is an UploadedFile.
+Note that FILES will only contain data if the request method was POST and the <form> that posted to the request had enctype="multipart/form-data". Otherwise, FILES will be a blank dictionary-like object.
+
+8.Uploaded Files and Upload Handlers.
+https://docs.djangoproject.com/en/1.7/ref/files/uploads/#django.core.files.uploadedfile.UploadedFile
+UploadedFile.name: The name of the uploaded file (e.g. my_file.txt).
+UploadedFile.size: The size, in bytes, of the uploaded file.
+UploadedFile.read(): Read the entire uploaded data from the file.
+
