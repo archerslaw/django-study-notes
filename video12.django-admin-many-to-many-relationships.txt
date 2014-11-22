@@ -1,0 +1,79 @@
+1.#ipython manage.py shell
+from blog.models import Author, Book
+authors = Author.objects.all()
+authors
+>[<Author: Alen>, <Author: Ben>, <Author: Carl>, <Author: Dev>]
+a1 = authors[0]
+a1.book_set
+a.book_set.all()
+>[<Book: java_book>]
+a.book_set.all()[0]
+><Book: java_book>
+for author in Author.objects.all():
+    for book in author.book_set.all():
+        print book
+
+2.#mkidr templates
+#vim views.py
+from blog.models import Author, Book
+from django.shortcuts import render_to_response
+
+def show_author(req):
+    authors = Author.object.all()
+    return render_to_response('show_author.html',{'authors':autors})
+
+3.#vim templates/show_autor.html
+{{authors}}
+
+{% for author in authors %}
+<div>
+<h3>{{ author.name }}</h3>
+    {% for book in author.book-set.all() %}
+    <li>{{ book }}</li>
+    {% endfor %}
+</div>
+{% endfor %}
+
+4.#vim urls.py
+url(r'^blog/show_author/$','blog.views.show_autor'),
+
+5.#python manage.py runserver
+
+6.#ipython manage.py shell
+from blog.models import Author
+alen = Author.object.filter(name='Alen')
+alen
+alen.book_set.create(name='php_book');
+
+7.#vim urls.py
+url(r'^blog/show_books/$','blog.views.show_books'),
+
+8.#vim views.py
+def show_book(req):
+    books = Book.object.all()
+    return render_to_response('show_books.html',{'authors':books})
+
+9.#vim templates/show_books.html
+{% for book in books %}
+<div>
+<h3>{{ book.name }}</h3>
+</div>
+{% endfor %}
+
+10.#ipython manage.py shell
+from blog.models import Book
+books = Book.objects.all()
+books
+books[0]
+b1 = books[0]
+b1.authors.all()
+
+11.#vim templates/show_books.html
+{% for book in books %}   
+<div>    
+<h1>{{ book.name }}</h1>
+    {% for author in book.authors.all() %}
+    <li>{{ author }}</li>
+    {% endfor %}
+</div>
+{% endfor %}
